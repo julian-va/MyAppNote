@@ -2,6 +2,9 @@ package com.example.myappnote.ui.view.note
 
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,21 +36,26 @@ import com.example.myappnote.data.dto.NoteDto
 import com.example.myappnote.ui.viewmodel.note.NoteViewModel
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteScreen(navController: NavHostController, noteViewModel: NoteViewModel = hiltViewModel()) {
 
-    Scaffold(modifier = Modifier.fillMaxSize(), floatingActionButton = {
-        FloatingActionButton(
-            onClick = { noteViewModel.showDetailScreen() }) {
-            Icon(imageVector = Icons.Default.Add, contentDescription = "new note")
-        }
-    }) {
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { noteViewModel.showDetailScreen() }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "new note")
+            }
+        },
+    ) {
         if (noteViewModel.state.value.showDetailScreen) {
             NoteDetailScreen(noteViewModel = noteViewModel)
         } else {
             if (noteViewModel.state.value.noteList.isNotEmpty()) {
+
                 LazyColumn {
                     items(noteViewModel.state.value.noteList) { notes ->
                         CardNote(
@@ -54,7 +63,27 @@ fun NoteScreen(navController: NavHostController, noteViewModel: NoteViewModel = 
                             delete = { noteViewModel.deleteNote(it) },
                             update = { noteViewModel.showDetailScreen(idNOte = it) })
                     }
+
                 }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(10.dp),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    Button(onClick = {
+                        noteViewModel.sendNotesToServer()
+                    }) {
+                        Text(
+                            text = "Send notes to server",
+                            modifier = Modifier
+                                .padding(2.dp)
+                                .align(Alignment.Bottom),
+                        )
+                    }
+                }
+
             } else {
                 Text(
                     text = "There are no notes, do you want to add one?",

@@ -1,11 +1,13 @@
 package com.example.myappnote.data.dto
 
-import java.util.Date
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.example.myappnote.util.UtilsApp
 
-data class NoteDto(
+data class NoteDto @RequiresApi(Build.VERSION_CODES.O) constructor(
     val id: Long = System.currentTimeMillis(),
     var noteName: String,
     var noteDescription: String,
-    val creationDate: Date = Date(),
-    var updateDate: Date?
+    val creationDate: String = UtilsApp.parseDatePatter(),
+    var updateDate: String?
 )

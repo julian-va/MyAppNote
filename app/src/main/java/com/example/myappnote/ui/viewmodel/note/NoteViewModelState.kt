@@ -7,5 +7,7 @@ import com.example.myappnote.data.dto.NoteDto
 data class NoteViewModelState(
     val noteList: SnapshotStateList<NoteDto> = mutableStateListOf(),
     val showDetailScreen: Boolean = false,
-    val idNote: Long = 0
+    val idNote: Long = 0,
+    val noteName: String = "",
+    val noteDescription: String = ""
 )

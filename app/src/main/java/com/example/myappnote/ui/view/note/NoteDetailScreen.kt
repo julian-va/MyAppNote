@@ -22,11 +22,12 @@ import com.example.myappnote.ui.viewmodel.note.NoteViewModel
 
 @Composable
 fun NoteDetailScreen(noteViewModel: NoteViewModel) {
+    noteViewModel.retrieverNoteNameAndNoteDescription()
     var noteName by remember {
-        mutableStateOf("")
+        mutableStateOf(noteViewModel.state.value.noteName)
     }
     var noteDescription by remember {
-        mutableStateOf("")
+        mutableStateOf(noteViewModel.state.value.noteDescription)
     }
     ElevatedCard(
         elevation = CardDefaults.cardElevation(

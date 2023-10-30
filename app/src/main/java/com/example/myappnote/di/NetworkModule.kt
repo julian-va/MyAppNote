@@ -1,6 +1,7 @@
 package com.example.myappnote.di
 
 import com.example.myappnote.data.dto.ConstantApp
+import com.example.myappnote.data.repository.network.NoteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,5 +21,11 @@ object NetworkModule {
             .baseUrl(ConstantApp.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun providePictureRepository(retrofit: Retrofit): NoteRepository {
+        return retrofit.create(NoteRepository::class.java)
     }
 }
